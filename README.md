@@ -13,4 +13,4 @@ python todo_cli.py complete 1
 python todo_cli.py remove 1
 ```
 
-Tasks are stored in `todo.json` in the project directory.
+Each task is stored with its creation timestamp in `todo.json` in the project directory.

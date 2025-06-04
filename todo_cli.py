@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+from datetime import datetime
 
 TODO_FILE = 'todo.json'
 
@@ -23,7 +24,12 @@ def save_tasks(tasks):
 def add_task(description):
     tasks = load_tasks()
     task_id = tasks[-1]['id'] + 1 if tasks else 1
-    tasks.append({'id': task_id, 'description': description, 'completed': False})
+    tasks.append({
+        'id': task_id,
+        'description': description,
+        'completed': False,
+        'created_at': datetime.now().isoformat(),
+    })
     save_tasks(tasks)
     print(f"Added task {task_id}: {description}")
 
@@ -34,7 +40,11 @@ def list_tasks(show_all=False):
         if not show_all and task['completed']:
             continue
         status = '✓' if task['completed'] else ' '
-        print(f"[{status}] {task['id']}: {task['description']}")
+        created_at = task.get('created_at')
+        if created_at:
+            print(f"[{status}] {task['id']}: {task['description']} ({created_at})")
+        else:
+            print(f"[{status}] {task['id']}: {task['description']}")
 
 
 def complete_task(task_id):
