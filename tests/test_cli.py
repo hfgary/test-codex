@@ -38,5 +38,14 @@ class TodoCLITest(unittest.TestCase):
         output = self.run_cli('list')
         self.assertEqual('', output)
 
+    def test_timestamp_added(self):
+        self.run_cli('add', 'Timed Task')
+        with open(TODO_FILE) as f:
+            tasks = json.load(f)
+        self.assertIn('created_at', tasks[0])
+        # Validate ISO format
+        from datetime import datetime
+        datetime.fromisoformat(tasks[0]['created_at'])
+
 if __name__ == '__main__':
     unittest.main()
